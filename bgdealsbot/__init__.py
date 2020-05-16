@@ -8,7 +8,7 @@ import praw
 import requests
 
 
-def post_daily_deals():
+def post_daily_deals(subreddit="boardgamedeals"):
     queries = [get_cardhaus_dotd, get_gamenerdz_dotd]
     deals = []
     for query in queries:
@@ -21,9 +21,9 @@ def post_daily_deals():
                          username=os.environ['REDDIT_USER'],
                          password=os.environ['REDDIT_PW'])
 
-    subreddit = reddit.subreddit("testingground4bots") #"boardgamedeals")
+    subred = reddit.subreddit(subreddit)
     for deal in deals:
-        submission = reddit_call(partial(subreddit.submit, deal.get_formatted_title(), url=deal.link))
+        submission = reddit_call(partial(subred.submit, deal.get_formatted_title(), url=deal.link))
         if deal.bgg_link:
             reddit_call(partial(submission.reply, "Game Info: [BGG] ({})".format(deal.bgg_link)))
 
@@ -135,4 +135,4 @@ class DealQueryError(Exception):
     pass
 
 if __name__ == '__main__':
-    post_daily_deals()
+    post_daily_deals(subreddit="testingground4bots")

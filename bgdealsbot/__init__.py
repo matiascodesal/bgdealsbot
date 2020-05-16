@@ -72,7 +72,9 @@ def get_cardhaus_dotd():
             price = soup.find("span", {"class": "price price--withoutTax"})
             price = float(price.text[1:])
             bgg_url = soup.find("div", {"class": "customField--BoardGameGeeks URL"}).dd.text
-            return Deal(game_name, price, link, "Cardhaus")
+            deal = Deal(game_name, price, link, "Cardhaus")
+            deal.bgg_link = bgg_url
+            return deal
         else:
             raise DealQueryError("Error getting Cardhaus game page")
     else:

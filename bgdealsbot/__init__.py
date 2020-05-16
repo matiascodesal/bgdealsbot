@@ -25,7 +25,7 @@ def post_daily_deals(subreddit="boardgamedeals"):
     for deal in deals:
         submission = reddit_call(partial(subred.submit, deal.get_formatted_title(), url=deal.link))
         if deal.bgg_link:
-            reddit_call(partial(submission.reply, "Game Info: [BGG] ({})".format(deal.bgg_link)))
+            reddit_call(partial(submission.reply, "Game Info: [BGG]({})".format(deal.bgg_link)))
 
 def ratelimit_retry(retries):
     if retries < 0:

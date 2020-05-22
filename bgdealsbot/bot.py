@@ -1,3 +1,4 @@
+from datetime import datetime, date, time as dt_time
 import os
 import re
 import sys
@@ -60,7 +61,8 @@ class BgDealsBot(object):
     def run(self):
         self.query_deals()
         for deal in self.deals:
-            self.submit_deal(deal)
+            if self.is_new(deal):
+                self.submit_deal(deal)
 
         self.check_failures()
 
@@ -69,6 +71,18 @@ class BgDealsBot(object):
             for item in self.failed_lookups:
                 print("{} failed with error:\n\t{}".format(item[0], item[1]))
             raise RuntimeError("BgDealsBot completed with errors!")
+
+    def is_new(self, deal):
+        today_beginning = datetime.combine(date.today(), dt_time())
+        for submission in self.subreddit.new(limit=100):
+            # create local time datetime
+            creation_time = datetime.fromtimestamp(submission.created_utc)
+            if creation_time < today_beginning:
+                break
+            if deal.link in submission.url or deal.link in submission.selftext:
+                return False
+
+        return True
 
     @ratelimit_retry(2)
     def submit_deal(self, deal):

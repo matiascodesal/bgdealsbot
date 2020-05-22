@@ -6,7 +6,7 @@ from bgdealsbot.utils import Deal, DealQueryError
 
 def get_cardhaus_dotd():
     url = "https://www.cardhaus.com/"
-    response = requests.get(url)
+    response = requests.get(url, headers={'Cache-Control': 'no-cache'})
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         link = soup.find("img", {"title": "daily-deal-generic-rectangle.png"}).parent['href']
@@ -28,7 +28,7 @@ def get_cardhaus_dotd():
 
 def get_gamenerdz_dotd():
     url = "https://www.gamenerdz.com/deal-of-the-day"
-    response = requests.get(url)
+    response = requests.get(url, headers={'Cache-Control': 'no-cache'})
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         first_product = soup.find("ul", {"class": "productGrid"}).findChild()
@@ -43,7 +43,7 @@ def get_gamenerdz_dotd():
 
 def get_miniaturemarket_dotd():
     url = "https://www.miniaturemarket.com/dailydeal/"
-    response = requests.get(url)
+    response = requests.get(url, headers={'Cache-Control': 'no-cache'})
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         first_product = soup.find("div", {"class": "product-details"})
@@ -58,7 +58,7 @@ def get_miniaturemarket_dotd():
 
 def get_boardlandia_dotw():
     url = "https://boardlandia.com/collections/deal-of-the-week"
-    response = requests.get(url)
+    response = requests.get(url, headers={'Cache-Control': 'no-cache'})
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         game_name = soup.find("h2", {"class": "productitem--title"}).a.text

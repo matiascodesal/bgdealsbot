@@ -31,6 +31,8 @@ def ratelimit_retry(retries):
                             delay_seconds = float(delay.group(1))
                             print("RATE LIMITED!  Waiting {} seconds".format(delay_seconds))
                             time.sleep(delay_seconds)
+                    else:
+                        raise e
         return wrapper_f
     return wrapper
 
@@ -54,7 +56,9 @@ class BgDealsBot(object):
     def query_deals(self):
         for lookup in self.lookups:
             try:
-                self.deals.append(lookup())
+                deal = lookup()
+                if deal:
+                    self.deals.append(deal)
             except Exception as e:
                 self.failed_lookups.append((lookup, e))
 
@@ -74,13 +78,15 @@ class BgDealsBot(object):
 
     def is_new(self, deal):
         today_beginning = datetime.combine(date.today(), dt_time())
+
         for submission in self.subreddit.new(limit=100):
             # create local time datetime
             creation_time = datetime.fromtimestamp(submission.created_utc)
             if creation_time < today_beginning:
                 break
-            if deal.link in submission.url or deal.link in submission.selftext:
-                return False
+            for link in deal.get_possible_links():
+                if link in submission.url or link in submission.selftext:
+                    return False
 
         return True
 

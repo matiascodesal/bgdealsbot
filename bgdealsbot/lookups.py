@@ -66,7 +66,7 @@ def get_miniaturemarket_dotd():
     else:
         raise DealQueryError("DealQueryError: Error getting MiniatureMarket home page")
 
-@schedule(19, day=2)
+@schedule(4, day=3)
 def get_boardlandia_dotw():
     url = "https://boardlandia.com/collections/deal-of-the-week"
     response = requests.get(url, headers={'Cache-Control': 'no-cache'})

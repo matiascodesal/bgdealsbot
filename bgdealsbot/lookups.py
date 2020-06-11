@@ -113,7 +113,7 @@ def get_boardlandia_dotw():
             link = "https://boardlandia.com" + link
         price = soup.find("div", {"class": "price--main"}).span.text
         price = float(price.strip()[2:])
-        deal = Deal(game_name, price, link, "Boardlandia", type="DotW")
+        deal = Deal(game_name, price, link, "Boardlandia", deal_type="DotW")
         deal.alt_links.append("https://boardlandia.com/collections/deal-of-the-week")
         return deal
     else:

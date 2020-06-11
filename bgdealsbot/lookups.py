@@ -3,9 +3,18 @@ from bs4 import BeautifulSoup
 
 from bgdealsbot.utils import Deal, DealQueryError, schedule
 
+
 # New deal really at 12AM (EST), but 6AM is more user-friendly
 @schedule(6)
 def get_cardhaus_dotd():
+    """ Cardhaus for a daily deal
+
+    Returns:
+        (Deal) a deal object
+
+    Raises:
+        (DealQueryError) If webpage request fails.
+    """
     url = "https://www.cardhaus.com/"
     response = requests.get(url, headers={'Cache-Control': 'no-cache'})
     if response.status_code == 200:
@@ -32,6 +41,14 @@ def get_cardhaus_dotd():
 
 @schedule(11)
 def get_gamenerdz_dotd():
+    """ GameNerdz for a daily deal
+
+        Returns:
+            (Deal) a deal object
+
+        Raises:
+            (DealQueryError) If webpage request fails.
+        """
     url = "https://www.gamenerdz.com/deal-of-the-day"
     response = requests.get(url, headers={'Cache-Control': 'no-cache'})
     if response.status_code == 200:
@@ -49,6 +66,14 @@ def get_gamenerdz_dotd():
 
 @schedule(9)
 def get_miniaturemarket_dotd():
+    """ MiniatureMarket for a daily deal
+
+    Returns:
+        (Deal) a deal object
+
+    Raises:
+        (DealQueryError) If webpage request fails or the deal has expired
+    """
     url = "https://www.miniaturemarket.com/dailydeal/"
     response = requests.get(url, headers={'Cache-Control': 'no-cache'})
     if response.status_code == 200:
@@ -66,8 +91,17 @@ def get_miniaturemarket_dotd():
     else:
         raise DealQueryError("DealQueryError: Error getting MiniatureMarket home page")
 
+# day=Thursday
 @schedule(4, day=3)
 def get_boardlandia_dotw():
+    """ Boardlandia for a deal of the week
+
+    Returns:
+        (Deal) a deal object
+
+    Raises:
+        (DealQueryError) If webpage request fails.
+    """
     url = "https://boardlandia.com/collections/deal-of-the-week"
     response = requests.get(url, headers={'Cache-Control': 'no-cache'})
     if response.status_code == 200:
